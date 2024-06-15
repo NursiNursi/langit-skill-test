@@ -1,8 +1,7 @@
-import { Col, Container, Row, Table } from "react-bootstrap";
+import { Button, Col, Container, Row, Table } from "react-bootstrap";
 
 import { fetchAllUsers } from "../redux/actions/userActions";
 import { useEffect } from "react";
-import { AiFillDelete, AiFillEdit, AiFillEye } from "react-icons/ai";
 import { connect } from "react-redux";
 
 function UserList({ userData, fetchAllUsers }) {
@@ -25,6 +24,14 @@ function UserList({ userData, fetchAllUsers }) {
 
   return (
     <Container>
+      <Row className="py-5 mt-5">
+        <Col>
+          <Button variant="outline-primary" className="pe-none">
+            All Users{" "}
+            <span className="badge bg-secondary">{userData.length}</span>
+          </Button>
+        </Col>
+      </Row>
       <Row>
         <Col>
           <Table hover responsive="sm">
@@ -36,7 +43,6 @@ function UserList({ userData, fetchAllUsers }) {
                 <th>Address</th>
                 <th>Company</th>
                 <th>Website</th>
-                <th>Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -48,19 +54,6 @@ function UserList({ userData, fetchAllUsers }) {
                   <td>{`${user.address.suite}, ${user.address.street}, ${user.address.city}`}</td>
                   <td>{user.company.name}</td>
                   <td>{user.website}</td>
-                  <td>
-                    <Row>
-                      <Col>
-                        <AiFillEye color="dodgerblue" role="button" />
-                      </Col>
-                      <Col>
-                        <AiFillEdit color="dodgerblue" role="button" />
-                      </Col>
-                      <Col>
-                        <AiFillDelete color="red" role="button" />
-                      </Col>
-                    </Row>
-                  </td>
                 </tr>
               ))}
             </tbody>
