@@ -3,6 +3,7 @@ import { Button, Col, Form } from "react-bootstrap";
 import ModalComponent from "./ui/ModalComponent";
 import { connect } from "react-redux";
 import { addUser } from "../redux/actions/userActions";
+import { AiFillPlusCircle } from "react-icons/ai";
 
 const initialUserData = {
   name: "",
@@ -55,7 +56,10 @@ const AddUser = ({ userData, addUser }) => {
       </Col>
       <Col className="text-end">
         <Button variant="primary" onClick={handleAdd}>
-          Add user
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <AiFillPlusCircle size={20} style={{ marginRight: "5px" }} />
+            Add user
+          </div>
         </Button>
       </Col>
 
