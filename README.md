@@ -1,4 +1,5 @@
-# PT. Langgeng Inovasi Teknologi (LANGIT) Assignment
+# PT. Langgeng Inovasi Teknologi (LANGIT) Frontend Assignment
+
 
 ## Installation
 
