@@ -1,56 +1,33 @@
-import { Button, Col, Container, Row, Table } from "react-bootstrap";
-
-import { deleteUser, fetchAllUsers } from "../redux/actions/userActions";
 import { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import AddUser from "./AddUser";
+import {
+  Button,
+  Col,
+  Container,
+  Placeholder,
+  Row,
+  Table,
+} from "react-bootstrap";
 import { AiFillDelete } from "react-icons/ai";
+
+import { connect } from "react-redux";
+import { deleteUser, fetchAllUsers } from "../redux/actions/userActions";
+import { confirmDelete, getAllUsers } from "../service/api";
+
+import AddUser from "./AddUser";
 import ModalComponent from "./ui/ModalComponent";
-import toast from "react-hot-toast";
 
 function UserList({ userData, fetchAllUsers, deleteUser }) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const getAllUsers = async () => {
-      try {
-        const response = await fetch(
-          "https://jsonplaceholder.typicode.com/users"
-        );
-        const data = await response.json();
-        fetchAllUsers(data);
-        console.log(data);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-
-    getAllUsers();
+    getAllUsers(fetchAllUsers, setIsLoading);
   }, [fetchAllUsers]);
 
   const handleDelete = (userInfo) => {
     setShowDeleteModal(true);
     setSelectedUser(userInfo);
-  };
-
-  const confirmDelete = () => {
-    fetch(`https://jsonplaceholder.typicode.com/users/${selectedUser.id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (response.ok === true) {
-          deleteUser(selectedUser.id);
-        }
-        setShowDeleteModal(false);
-        toast.success("User successfully deleted");
-      })
-      .catch((error) => {
-        console.error("There was a problem with the fetch operation:", error);
-      });
   };
 
   return (
@@ -105,6 +82,14 @@ function UserList({ userData, fetchAllUsers, deleteUser }) {
                 ))}
               </tbody>
             </Table>
+            {isLoading && (
+              <Placeholder animation="glow">
+                <Placeholder xs={12} size="lg" />
+                <Placeholder xs={12} size="lg" />
+                <Placeholder xs={12} size="lg" />
+                <Placeholder xs={12} size="lg" />
+              </Placeholder>
+            )}
           </Col>
         </Row>
       </Container>
@@ -112,7 +97,9 @@ function UserList({ userData, fetchAllUsers, deleteUser }) {
         <ModalComponent
           showModal={showDeleteModal}
           setShowModal={setShowDeleteModal}
-          confirmAction={confirmDelete}
+          confirmAction={() =>
+            confirmDelete(selectedUser, deleteUser, setShowDeleteModal)
+          }
           title="Delete User"
           content="Are you sure you want to delete this user ?"
           confirmButtonText="Confirm"

@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Button, Col, Form } from "react-bootstrap";
-import ModalComponent from "./ui/ModalComponent";
+import { AiFillPlusCircle } from "react-icons/ai";
+
 import { connect } from "react-redux";
 import { addUser } from "../redux/actions/userActions";
-import { AiFillPlusCircle } from "react-icons/ai";
-import toast from "react-hot-toast";
+import { confirmAdd } from "../service/api";
+
+import ModalComponent from "./ui/ModalComponent";
 
 const initialUserData = {
   name: "",
@@ -20,32 +22,6 @@ const AddUser = ({ userData, addUser }) => {
 
   const handleAdd = () => {
     setShowAddModal(true);
-  };
-
-  const confirmAdd = () => {
-    fetch(`https://jsonplaceholder.typicode.com/users`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: newUser.name,
-        email: newUser.email,
-        company: { name: newUser.company },
-        address: { city: newUser.address },
-        website: newUser.website,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        addUser(data);
-        setShowAddModal(false);
-        setnewUser(initialUserData);
-        toast.success("New user successfully added");
-      })
-      .catch((error) => {
-        console.error("There was a problem with the fetch operation:", error);
-      });
   };
 
   return (
@@ -69,7 +45,15 @@ const AddUser = ({ userData, addUser }) => {
         <ModalComponent
           showModal={showAddModal}
           setShowModal={setShowAddModal}
-          confirmAction={confirmAdd}
+          confirmAction={() =>
+            confirmAdd(
+              newUser,
+              addUser,
+              setShowAddModal,
+              setnewUser,
+              initialUserData
+            )
+          }
           title="Add new user"
           content={
             <NewUserFormComponent newUser={newUser} setnewUser={setnewUser} />
