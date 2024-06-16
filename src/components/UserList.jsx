@@ -1,4 +1,4 @@
-import { Col, Container, Row, Table } from "react-bootstrap";
+import { Button, Col, Container, Row, Table } from "react-bootstrap";
 
 import { deleteUser, fetchAllUsers } from "../redux/actions/userActions";
 import { useEffect, useState } from "react";
@@ -68,6 +68,7 @@ function UserList({ userData, fetchAllUsers, deleteUser }) {
                   <th>Company</th>
                   <th>City</th>
                   <th>Website</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -80,15 +81,23 @@ function UserList({ userData, fetchAllUsers, deleteUser }) {
                     <td>{user.address.city}</td>
                     <td>{user.website}</td>
                     <td>
-                      <Row>
-                        <Col>
+                      <Button
+                        onClick={() => handleDelete(user)}
+                        variant="outline-danger"
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
                           <AiFillDelete
-                            onClick={() => handleDelete(user)}
-                            color="red"
-                            role="button"
+                            size={20}
+                            style={{ marginRight: "5px" }}
                           />
-                        </Col>
-                      </Row>
+                          Delete
+                        </div>
+                      </Button>
                     </td>
                   </tr>
                 ))}
