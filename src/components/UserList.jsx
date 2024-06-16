@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import AddUser from "./AddUser";
 import { AiFillDelete } from "react-icons/ai";
 import ModalComponent from "./ui/ModalComponent";
+import toast from "react-hot-toast";
 
 function UserList({ userData, fetchAllUsers, deleteUser }) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -45,6 +46,7 @@ function UserList({ userData, fetchAllUsers, deleteUser }) {
           deleteUser(selectedUser.id);
         }
         setShowDeleteModal(false);
+        toast.success("User successfully deleted");
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
