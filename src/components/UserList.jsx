@@ -1,8 +1,9 @@
-import { Button, Col, Container, Row, Table } from "react-bootstrap";
+import { Col, Container, Row, Table } from "react-bootstrap";
 
 import { fetchAllUsers } from "../redux/actions/userActions";
 import { useEffect } from "react";
 import { connect } from "react-redux";
+import AddUser from "./AddUser";
 
 function UserList({ userData, fetchAllUsers }) {
   useEffect(() => {
@@ -25,12 +26,7 @@ function UserList({ userData, fetchAllUsers }) {
   return (
     <Container>
       <Row className="py-5 mt-5">
-        <Col>
-          <Button variant="outline-primary" className="pe-none">
-            All Users{" "}
-            <span className="badge bg-secondary">{userData.length}</span>
-          </Button>
-        </Col>
+        <AddUser />
       </Row>
       <Row>
         <Col>
@@ -40,8 +36,8 @@ function UserList({ userData, fetchAllUsers }) {
                 <th>No</th>
                 <th>Nama</th>
                 <th>Email</th>
-                <th>Address</th>
                 <th>Company</th>
+                <th>City</th>
                 <th>Website</th>
               </tr>
             </thead>
@@ -51,8 +47,8 @@ function UserList({ userData, fetchAllUsers }) {
                   <td>{index + 1}</td>
                   <td className="fw-bold">{user.name}</td>
                   <td>{user.email}</td>
-                  <td>{`${user.address.suite}, ${user.address.street}, ${user.address.city}`}</td>
                   <td>{user.company.name}</td>
+                  <td>{user.address.city}</td>
                   <td>{user.website}</td>
                 </tr>
               ))}
